@@ -139,7 +139,7 @@
 
 ---
 
-## 1. Instalación de AgentSOC (Instalar git y docher segun el sistema linux que tengas)
+## 1. Instalación de AgentSOC (Instalar git y docker según el sistema linux que tengas)
 
 Instalación Actualizar paquetes y instalar git en debian 12
 
