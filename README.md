@@ -139,7 +139,7 @@
 
 ---
 
-## Instalación Actualizar paquetes y instalar git
+## 1. Instalación Actualizar paquetes y instalar git
 
 sudo apt update && sudo apt install git -y
 
@@ -163,9 +163,11 @@ newgrp docker
 docker --version
 docker compose version
 
-git clone git@github.com:gocendra/AgenteSOC.git
+git clone https://github.com/gocendra/AgentSOC.git
 
-cd agent-soc1.0/
+cd AgentSOC/
+
+chmod +x deploy.sh
 
 ./deploy.sh
 
