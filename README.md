@@ -171,7 +171,7 @@ cd AgentSOC/
 
 chmod +x deploy.sh
 
-./deploy.sh
+./deploy.sh --clean
 
 python3 -c "import secrets; print(secrets.token_urlsafe(64))"
 o
