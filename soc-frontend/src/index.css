@@ -1,0 +1,360 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+:root {
+  color-scheme: dark;
+  --bg-main: #0b0f19;
+  --bg-panel: #131826;
+  --bg-sidebar: #111522;
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --border-light: rgba(255, 255, 255, 0.05);
+  --border-strong: rgba(255, 255, 255, 0.1);
+  --text-danger: #fb7185; /* rose-400 */
+  --text-success: #34d399; /* emerald-400 */
+  --text-warning: #fbbf24; /* amber-400 */
+  --text-info: #60a5fa; /* blue-400 */
+  --text-accent: #818cf8; /* indigo-400 */
+}
+
+.light-theme {
+  color-scheme: light;
+  --bg-main: #e2e8f0; /* slate-200 */
+  --bg-panel: #ffffff;
+  --bg-sidebar: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #475569;
+  --border-light: rgba(0, 0, 0, 0.12);
+  --border-strong: rgba(0, 0, 0, 0.25);
+  --text-danger: #e11d48; /* rose-600 */
+  --text-success: #059669; /* emerald-600 */
+  --text-warning: #d97706; /* amber-600 */
+  --text-info: #2563eb; /* blue-600 */
+  --text-accent: #4f46e5; /* indigo-600 */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text-muted);
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+:root:not(.light-theme) ::-webkit-scrollbar-thumb { background: #334155; }
+::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+
+.panel {
+  background-color: var(--bg-panel);
+  border: 1px solid var(--border-light);
+  border-radius: 1rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.light-theme .panel {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-panel {
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid var(--border-light);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.input-field {
+  background-color: var(--bg-main);
+  border: 1px solid var(--border-strong);
+  border-radius: 0.75rem;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+.input-field:focus {
+  border-color: #6366f1;
+  outline: none;
+}
+
+/* Theme utility classes */
+.bg-theme-main { background-color: var(--bg-main); }
+.bg-theme-panel { background-color: var(--bg-panel); }
+.text-theme-main { color: var(--text-main); }
+.text-theme-muted { color: var(--text-muted); }
+.border-theme-light { border-color: var(--border-light); }
+.border-theme-strong { border-color: var(--border-strong); }
+
+.text-theme-danger { color: var(--text-danger); }
+.text-theme-success { color: var(--text-success); }
+.text-theme-warning { color: var(--text-warning); }
+.text-theme-info { color: var(--text-info); }
+.text-theme-accent { color: var(--text-accent); }
+
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Leaflet Map Styling */
+.leaflet-container {
+  font-family: inherit;
+  background-color: #0b0f19;
+}
+.light-theme .leaflet-container {
+  background-color: #e2e8f0;
+}
+.leaflet-popup-content-wrapper {
+  background: rgba(19, 24, 38, 0.95) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px);
+  border-radius: 0.75rem !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+  padding: 4px !important;
+}
+.light-theme .leaflet-popup-content-wrapper {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #0f172a !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+.leaflet-popup-tip {
+  background: rgba(19, 24, 38, 0.95) !important;
+}
+.light-theme .leaflet-popup-tip {
+  background: rgba(255, 255, 255, 0.95) !important;
+}
+.custom-tech-pin {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.custom-tech-pin:hover {
+  transform: scale(1.25);
+  z-index: 9999 !important;
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  50% { transform: scale(1.35); opacity: 0.25; }
+  100% { transform: scale(0.9); opacity: 0.9; }
+}
+.pulse-satellite {
+  animation: pulse-ring 2.5s infinite ease-in-out;
+}
+
+@keyframes pulse-target {
+  0% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.85); }
+  60% { transform: scale(1.08); box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+  100% { transform: scale(0.92); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+.pulse-target-ip {
+  animation: pulse-target 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes pulse-udc-ring {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.9); }
+  60% { transform: scale(1.15); box-shadow: 0 0 0 16px rgba(14, 165, 233, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(14, 165, 233, 0); }
+}
+.pulse-udc {
+  animation: pulse-udc-ring 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* OpenStreetMap Keyless Cyber Dark Tiles */
+.cyber-tile-dark {
+  filter: brightness(0.62) invert(1) contrast(1.35) hue-rotate(195deg) saturate(0.35) !important;
+}
+.light-theme .cyber-tile-dark {
+  filter: none !important;
+}
+
+/* Earth Map Frame & Atmosphere Glow */
+.earth-map-wrapper {
+  background: radial-gradient(circle at 50% 50%, #030712 0%, #000000 100%);
+  position: relative;
+}
+
+.earth-atmosphere-glow {
+  box-shadow: inset 0 0 45px rgba(6, 182, 212, 0.18), 0 0 25px rgba(14, 165, 233, 0.12);
+}
+
+/* Leaflet Custom UI Controls Dark Theme */
+.leaflet-bar {
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.6) !important;
+}
+.leaflet-bar a {
+  background-color: rgba(15, 23, 42, 0.9) !important;
+  color: #38bdf8 !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.2s ease !important;
+}
+.leaflet-bar a:hover {
+  background-color: rgba(30, 41, 59, 0.95) !important;
+  color: #ffffff !important;
+}
+
+/* Destello difuminado blanco frío y sutil en el borde del Login */
+.login-card-glow {
+  position: relative;
+  background-color: rgba(19, 24, 38, 0.94);
+  border: 1px solid rgba(224, 242, 254, 0.22);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 24px 2px rgba(224, 242, 254, 0.14),
+    0 0 54px 6px rgba(186, 230, 253, 0.08),
+    0 25px 60px -15px rgba(0, 0, 0, 0.8),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.35);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-card-glow:hover {
+  border-color: rgba(224, 242, 254, 0.35);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 0 32px 4px rgba(224, 242, 254, 0.22),
+    0 0 70px 10px rgba(186, 230, 253, 0.12),
+    0 30px 70px -15px rgba(0, 0, 0, 0.85),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.55);
+}
+
+/* Destello superior de luz blanca fría difuminada */
+.login-card-glow::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 18%;
+  right: 18%;
+  height: 2px;
+  background: linear-gradient(
+    90deg, 
+    transparent 0%, 
+    rgba(224, 242, 254, 0.35) 20%, 
+    rgba(255, 255, 255, 0.95) 50%, 
+    rgba(224, 242, 254, 0.35) 80%, 
+    transparent 100%
+  );
+  border-radius: 9999px;
+  filter: blur(0.6px);
+  box-shadow: 
+    0 0 10px 1px rgba(255, 255, 255, 0.85),
+    0 0 20px 2px rgba(224, 242, 254, 0.5);
+  pointer-events: none;
+  z-index: 20;
+  animation: flareBreathe 5s ease-in-out infinite alternate;
+}
+
+/* Halo difuminado ambiental alrededor de todo el borde */
+.login-card-glow::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 1.45rem;
+  background: radial-gradient(
+    ellipse at 50% 0%, 
+    rgba(255, 255, 255, 0.22) 0%, 
+    rgba(224, 242, 254, 0.12) 35%, 
+    rgba(186, 230, 253, 0.04) 65%, 
+    transparent 80%
+  );
+  filter: blur(14px);
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.85;
+  animation: auraPulse 6s ease-in-out infinite alternate;
+}
+
+.light-theme .login-card-glow {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-color: rgba(148, 163, 184, 0.4);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.8),
+    0 0 24px 2px rgba(186, 230, 253, 0.35),
+    0 20px 40px -10px rgba(0, 0, 0, 0.12);
+}
+
+@keyframes flareBreathe {
+  0% {
+    opacity: 0.55;
+    transform: scaleX(0.92);
+    box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.6), 0 0 12px 1px rgba(224, 242, 254, 0.35);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1.06);
+    box-shadow: 0 0 12px 2px rgba(255, 255, 255, 0.95), 0 0 24px 3px rgba(224, 242, 254, 0.65);
+  }
+}
+
+@keyframes auraPulse {
+  0% {
+    opacity: 0.65;
+    filter: blur(12px);
+  }
+  100% {
+    opacity: 0.95;
+    filter: blur(16px);
+  }
+}
+
+/* Radar & CTI Threat Scanner Animations */
+@keyframes radarSweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 4s linear infinite;
+  transform-origin: center center;
+}
+
+@keyframes radarBlipPulse {
+  0% { transform: scale(0.9); opacity: 0.9; }
+  50% { transform: scale(1.7); opacity: 0.2; }
+  100% { transform: scale(0.9); opacity: 0.9; }
+}
+
+.animate-radar-blip {
+  animation: radarBlipPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes flightDash {
+  to { stroke-dashoffset: -32; }
+}
+
+.animate-flight-dash {
+  stroke-dasharray: 6 6;
+  animation: flightDash 1.2s linear infinite;
+}
+
+@keyframes cyberGlowPulse {
+  0% { box-shadow: 0 0 5px rgba(244, 63, 94, 0.3); }
+  50% { box-shadow: 0 0 22px rgba(244, 63, 94, 0.75), 0 0 35px rgba(239, 68, 68, 0.35); }
+  100% { box-shadow: 0 0 5px rgba(244, 63, 94, 0.3); }
+}
+
+.animate-cyber-glow {
+  animation: cyberGlowPulse 2.2s infinite ease-in-out;
+}
+
+.cti-grid-scan {
+  background-size: 26px 26px;
+  background-image: 
+    linear-gradient(to right, rgba(6, 182, 212, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.08) 1px, transparent 1px);
+}
