@@ -35,17 +35,38 @@ if [ ! -f .env ]; then
         cp .env-example .env
     else
         cat << 'EOF' > .env
+# ==============================================================
+# AgentSOC - Plantilla de Variables de Entorno para Producción (.env)
+# Copiar este archivo como .env: cp .env-example .env
+# ==============================================================
+
 DEBUG=False
 HOST_PORT=80
+DJANGO_SECRET_KEY=genera-un-string-aleatorio-seguro-aqui-de-al-menos-50-caracteres
+
+# Base de Datos (en Docker Compose el host es 'db')
 DB_NAME=soc_central
 DB_USER=root
-DB_PASSWORD=root_super_secure_pass_2026
-DJANGO_SECRET_KEY=soc-secret-jwt-key-2026-secure-hmac-sha256-compliance-auth-token-key-soc
+DB_PASSWORD=root
+DB_HOST=db
+DB_PORT=3306
+
+# Administrador Inicial (se creará automáticamente en la base de datos limpia)
 INITIAL_ADMIN_USER=admin
-INITIAL_ADMIN_PASSWORD=admin123
-INITIAL_ADMIN_EMAIL=
+INITIAL_ADMIN_PASSWORD=MiContrasenaSegura2026!
+INITIAL_ADMIN_EMAIL=tu_correo@empresa.com
+
+# Notificaciones Opcionales por Telegram
 TELEGRAM_BOT_TOKEN=
 TELEGRAM_CHAT_ID=
+
+# Integración Opcional con OpenAI
+OPENAI_API_KEY=
+USE_AI=False
+
+# Rendimiento Gunicorn WSGI en Contenedor Backend
+GUNICORN_WORKERS=1
+GUNICORN_THREADS=4
 EOF
     fi
     chmod 600 .env
