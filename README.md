@@ -139,60 +139,84 @@
 
 ---
 
-## Instalación Rápida
+## Instalación Actualizar paquetes y instalar git
 
-### 1. Despliegue del SOC Central (Servidor Principal)
+sudo apt update && sudo apt install git -y
 
-1. Clonar el repositorio:
-   ```bash
-   git clone https://github.com/tu-usuario/agente_soc.git
-   cd agente_soc
-   ```
+Instalar Docker y Docke Compose
 
-2. Configurar las variables de entorno:
-   ```bash
-   cp .env-example .env
-   chmod 600 .env
-   nano .env
-   ```
-   *(Asegúrate de definir `DJANGO_SECRET_KEY`, contraseñas de MySQL y credenciales de Telegram/SMTP).*
+sudo apt update
+sudo apt install ca-certificates curl -y
 
-3. Levantar los contenedores con Docker Compose:
-   ```bash
-   docker compose up -d --build
-   ```
+sudo install -m 0755 -d /etc/apt/keyrings sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc sudo chmod a+r /etc/apt/keyrings/docker.asc
 
-4. Acceder al dashboard en tu navegador:
-   ```
-   https://tu-dominio.com  o  http://ip-del-servidor
-   ```
+echo \ "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \ $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
----
+sudo apt update
+
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+sudo usermod -aG docker $USER
+
+newgrp docker
+
+docker --version
+docker compose version
+
+git clone git@github.com:gocendra/AgenteSOC.git
+
+cd agent-soc1.0/
+
+./deploy.sh
+
+python3 -c "import secrets; print(secrets.token_urlsafe(64))"
+o
+openssl rand -base64 48 | tr -dc 'A-Za-z0-9_=-' | head -c 50; echo
+El resultado colocarlo en DJANGO_SECRET_KEY
+
+Cambiar contraseña de la base de datos > DB_PASSWORD
+
+./deploy.sh --clean
+
+Desde la LAN > http://IP-LAN Ingresa al sistema. (el navegador debe aceptar http)
+
+Agregar los mail y crear los usuarios 
+
+Agregar SMTP para el envió de mail, una vez agregado pide Autenticación en Dos Pasos (MFA) para los roles admin.
+
 
 ### 2. Despliegue del Agente de Monitoreo (En cada servidor a vigilar)
 
-El agente cuenta con un instalador automático que crea la carpeta `/opt/ai_soc_agent`, instala el entorno virtual y registra el servicio en Systemd:
+Para instalar script instalar_ai_soc_agent.sh, este script crea ai_soc_agent.py  y .env-agent  y el servicio en el server a monioterar.
 
-```bash
-# Ejecutar el instalador automatizado
-sudo bash instalar_ai_soc_agent.sh
-```
+>_ nano instalar_ai_soc_agent.sh  (pegan el contenido que esta github)
 
-El script te solicitará la **URL del SOC** (ej. `https://soc.tudominio.com`) y la **API Key** generada para ese nodo en el panel.
+>_ chmod +x instalar_ai_soc_agent.sh (permisos de ejecución)
 
-Para gestionar el agente en el servidor cliente:
-```bash
-# Iniciar y habilitar el servicio para arranque automático
-sudo systemctl enable --now ai_soc_agent
+>_ ./instalar_ai_soc_agent.sh
 
-# Ver estado del servicio
-sudo systemctl status ai_soc_agent
+variables en .env-agent
 
-# Ver logs de patrullaje en tiempo real
-journalctl -u ai_soc_agent -f
-```
+SOC_URL=https://soc.tudominio.com  (127.0.0.1:8000 desarrollo)
+SOC_API_KEY=key_asignada_en_el_panel
+USE_AI=False  (si queremos usar IA cambiar a true)
+OPENAI_API_KEY=(Key de OpenAI)
 
----
+Configurar que logs queremos monitorear de nuestro server en ai_soc_agent.py
+
+POSSIBLE_LOGS = {
+    "auth": "/var/log/auth.log",
+    "snort": "/etc/snort/alert",
+    "fail2ban": "/var/log/fail2ban.log",
+    "ufw": "/var/log/ufw.log",
+    "nginx_error": "/var/log/nginx/error.log",
+    "apache_error": "/var/log/apache2/error.log",
+    "syslog": "/var/log/syslog"
+}
+
+
+Una vez modificado reiniciar el servicio sudo systemctl restart ai_soc_agent.service 
+
 
 ## Consideraciones de Seguridad y Buenas Prácticas
 
@@ -215,5 +239,7 @@ A continuación se detallan los requisitos de hardware y software necesarios par
 ---
 
 ## Licencia
+
+Autor: Lic. Gabriel Cendra 
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
