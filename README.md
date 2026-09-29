@@ -139,9 +139,9 @@
 
 ---
 
-## 1. Instalación de AgentSOC 
+## 1. Instalación de AgentSOC (Instalar git y docher segun el sistema linux que tengas)
 
-Instalación Actualizar paquetes y instalar git
+Instalación Actualizar paquetes y instalar git en debian 12
 
 sudo apt update && sudo apt install git -y
 
