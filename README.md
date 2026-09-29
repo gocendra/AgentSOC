@@ -200,6 +200,18 @@ journalctl -u ai_soc_agent -f
 - **Protección de Secretos**: Los archivos `.env` y `.env-agent` deben mantenerse siempre con permisos `chmod 600` (`-rw-------`) y nunca comitearse a repositorios públicos.
 - **Comunicaciones Cifradas**: Se recomienda encarecidamente utilizar HTTPS con certificados SSL/TLS válidos (Let's Encrypt o Cloudflare) para el endpoint central del SOC.
 
+## Requisitos del Sistema
+
+A continuación se detallan los requisitos de hardware y software necesarios para el despliegue, dependiendo de la escala de la implementación:
+
+| Recurso | Requisito Mínimo (Pruebas / 1 a 5 agentes) | Recomendado para Producción (10 a 50 agentes) | Empresa / Alto Tráfico (+100 agentes) |
+| :--- | :--- | :--- | :--- |
+| **Procesador (CPU)** | 2 vCPU / Cores | 2 a 4 vCPU | 4 a 8 vCPU |
+| **Memoria RAM** | 2 GB (con Swap activo) | 4 GB | 8 GB o más |
+| **Almacenamiento (Disco)** | 20 GB SSD | 40 - 60 GB SSD | 100+ GB SSD / NVMe |
+| **Sistema Operativo** | Debian 11/12, Ubuntu 22.04/24.04 LTS, Rocky Linux / RHEL 9 | Debian 12 o Ubuntu 24.04 LTS | Debian 12 o Ubuntu 24.04 LTS |
+| **Red** | 100 Mbps (IP fija o LAN) | 100 Mbps - 1 Gbps | 1 Gbps |
+
 ---
 
 ## Licencia
