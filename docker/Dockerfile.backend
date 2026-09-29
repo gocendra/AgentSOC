@@ -1,0 +1,39 @@
+# ==============================================================
+# AgentSOC - Dockerfile para Backend Django REST
+# ==============================================================
+FROM python:3.10-slim
+
+# Evitar prompts interactivos y buffers de Python
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    DEBIAN_FRONTEND=noninteractive \
+    PYTHONPATH=/app
+
+WORKDIR /app
+
+# Instalar dependencias del sistema necesarias para mysqlclient, red y ping
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    default-libmysqlclient-dev \
+    pkg-config \
+    iputils-ping \
+    net-tools \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Instalar dependencias de Python
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copiar el código fuente, scripts de agentes y migraciones
+COPY backend_soc_django.py /app/
+COPY instalar_ai_soc_agent.sh /app/
+COPY ai_soc_agent.py /app/
+COPY migrations /app/migrations
+COPY docker/entrypoint-backend.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+EXPOSE 8000
+
+ENTRYPOINT ["/app/entrypoint.sh"]

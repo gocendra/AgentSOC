@@ -1,0 +1,26 @@
+# ==============================================================
+# AgentSOC - Servicio de Producción Systemd para Backend Django
+# Ubicación en servidor: /etc/systemd/system/soc-backend.service
+# Activar: sudo systemctl daemon-reload && sudo systemctl enable --now soc-backend
+# ==============================================================
+
+[Unit]
+Description=AgentSOC Backend Django Server
+After=network.target mysql.service
+Wants=mysql.service
+
+[Service]
+Type=simple
+User=gabriel
+Group=gabriel
+WorkingDirectory=/home/gabriel/github/agente_soc
+EnvironmentFile=/home/gabriel/github/agente_soc/.env
+ExecStart=/home/gabriel/github/agente_soc/venv/bin/gunicorn backend_soc_django:application --bind 127.0.0.1:8000 --workers 4 --threads 2 --timeout 60 --access-logfile - --error-logfile -
+
+Restart=always
+RestartSec=5
+KillMode=mixed
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

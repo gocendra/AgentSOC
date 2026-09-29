@@ -1,0 +1,28 @@
+# ==============================================================
+# AgentSOC - Servicio de Producción Systemd para Agente de Monitoreo
+# Ubicación en servidor: /etc/systemd/system/soc-agent.service
+# Activar: sudo systemctl daemon-reload && sudo systemctl enable --now soc-agent
+# ==============================================================
+
+[Unit]
+Description=AgentSOC Security Monitoring Agent Daemon
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/gabriel/github/agente_soc
+EnvironmentFile=/home/gabriel/github/agente_soc/.env-agent
+ExecStart=/home/gabriel/github/agente_soc/venv/bin/python3 /home/gabriel/github/agente_soc/ai_soc_agent.py
+
+Restart=always
+RestartSec=10
+LimitNOFILE=65535
+
+# Seguridad del servicio
+PrivateTmp=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,95 @@
+# ==============================================================
+# AgentSOC - Orquestación de Contenedores con Docker Compose
+# Uso: docker compose up -d --build
+# ==============================================================
+
+services:
+  # Base de Datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: soc-mysql
+    restart: unless-stopped
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-soc_central}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+    volumes:
+      - soc_mysql_data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "127.0.0.1" ]
+      interval: 5s
+      timeout: 5s
+      retries: 25
+      start_period: 15s
+    networks:
+      - soc-network
+
+  # Backend Django REST Framework + Gunicorn
+  backend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.backend
+    container_name: soc-backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-soc_central}
+      DB_USER: ${DB_USER:-root}
+      DB_PASSWORD: ${DB_PASSWORD:-root}
+      DEBUG: ${DEBUG:-False}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-soc-secret-jwt-key-2026-secure-hmac-sha256}
+      INITIAL_ADMIN_USER: ${INITIAL_ADMIN_USER:-admin}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-admin123}
+      INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:-}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      USE_AI: ${USE_AI:-False}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-1}
+      GUNICORN_THREADS: ${GUNICORN_THREADS:-4}
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/system-branding/" ]
+      interval: 5s
+      timeout: 5s
+      retries: 25
+      start_period: 25s
+    networks:
+      - soc-network
+
+  # Frontend React (Compilado en SPA) + Nginx Reverse Proxy
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.frontend
+    container_name: soc-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "${HOST_PORT:-80}:80"
+    healthcheck:
+      test: [ "CMD", "wget", "-qO-", "http://127.0.0.1/" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - soc-network
+
+volumes:
+  soc_mysql_data:
+    name: soc_mysql_data
+
+networks:
+  soc-network:
+    name: soc-network
+    driver: bridge
