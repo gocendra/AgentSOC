@@ -134,12 +134,14 @@
   - Docker y Docker Compose v2+.
   - Puertos `80` y `443` disponibles.
 - **Para los Nodos / Servidores a Monitorear**:
-  - Cualquier distribución Linux con Python 3.8+.
+  - Cualquier distribución Linux con Python 3.10+.
   - Conexión saliente HTTPS hacia el servidor del SOC.
 
 ---
 
-## 1. Instalación Actualizar paquetes y instalar git
+## 1. Instalación de AgentSOC 
+
+Instalación Actualizar paquetes y instalar git
 
 sudo apt update && sudo apt install git -y
 
