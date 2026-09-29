@@ -71,7 +71,7 @@
 
 ---
 
-### 2. ⚡ Backend Central y Motor de Detección (`Django + MySQL`)
+### 2. Backend Central y Motor de Detección (`Django + MySQL`)
 - **Ingesta Segura de Incidentes**: Endpoint protegido con autenticación por clave de API única generada para cada nodo registrado.
 - **Notificaciones Inmediatas Multicanal**:
   - **Telegram Bot**: Mensajes enriquecidos con formato visual, servidor afectado, criticidad, evidencia y recursos.
